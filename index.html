@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minute Cryptic: Birthday Edition</title>
+    <style>
+        /* Minute Cryptic exact color palette & styling */
+        body {
+            background-color: #fcfaf6;
+            color: #1a1a1a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #8c8a85;
+            margin-bottom: 30px;
+        }
+
+        .clue-box {
+            font-family: Georgia, serif;
+            font-size: 1.35rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            padding: 0 10px;
+        }
+
+        /* The Letter Grid */
+        .grid {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .letter-input {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #1a1a1a;
+            border-radius: 4px;
+            background: transparent;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .letter-input:focus {
+            background-color: #f0ede6;
+        }
+
+        /* Success States */
+        .letter-input.correct {
+            background-color: #538d4e;
+            color: white;
+            border-color: #538d4e;
+        }
+
+        .status-message {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #538d4e;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.5s ease;
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* The Secret Paragraph Reveal */
+        .reveal-paragraph {
+            display: none;
+            opacity: 0;
+            background: #ffffff;
+            border: 1px solid #e4e2dd;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: left;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: opacity 0.8s ease;
+        }
+
+        .reveal-paragraph.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="header">Minute Cryptic • Special Edition</div>
+        
+        <!-- CHANGE YOUR CLUE HERE -->
+        <div class="clue-box">
+            "Whose special day is it today?" (5)
+        </div>
+
+        <div class="grid" id="inputGrid"></div>
+        <div class="status-message" id="statusMessage">Correct! 🎉</div>
+
+        <!-- CHANGE YOUR FINAL PARAGRAPH HERE -->
+        <div class="reveal-paragraph" id="revealParagraph">
+            <h3>Happy Birthday!</h3>
+            <p>Insert your custom whole paragraph and stuff right here. You can write as much as you want to celebrate your friend's birthday, share an inside joke, or leave instructions for a real-life gift!</p>
+        </div>
+    </div>
+
+    <script>
+        // CHANGE THIS TO YOUR FRIEND'S NAME (UPPERCASE)
+        const ANSWER = "SARAH"; 
+
+        const grid = document.getElementById('inputGrid');
+        const statusMessage = document.getElementById('statusMessage');
+        const revealParagraph = document.getElementById('revealParagraph');
+        const inputs = [];
+
+        // Create the letter boxes dynamically based on answer length
+        for (let i = 0; i < ANSWER.length; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 1;
+            input.className = 'letter-input';
+            grid.appendChild(input);
+            inputs.push(input);
+
+            // Auto-advance to next box typing
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && i < ANSWER.length - 1) {
+                    inputs[i + 1].focus();
+                }
+                checkAnswer();
+            });
+
+            // Allow backspacing to go backward
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value.length === 0 && i > 0) {
+                    inputs[i - 1].focus();
+                }
+            });
+        }
+
+        function checkAnswer() {
+            let currentGuess = inputs.map(input => input.value.toUpperCase()).join('');
+            
+            if (currentGuess === ANSWER) {
+                inputs.forEach(input => {
+                    input.classList.add('correct');
+                    input.disabled = true;
+                });
+                
+                // Show the "Correct!" banner and smoothly fade in the paragraph
+                statusMessage.classList.add('show');
+                revealParagraph.classList.add('show');
+            }
+        }
+    </script>
+</body>
+</html>
