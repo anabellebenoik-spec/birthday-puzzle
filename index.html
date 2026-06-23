@@ -5,164 +5,340 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minute Cryptic: Birthday Edition</title>
     <style>
-        /* Minute Cryptic exact color palette & styling */
+        /* MINUTE CRYPTIC EXACT STYLING */
         body {
-            background-color: #fcfaf6;
+            background-color: #A9D1F7; /* Minute Cryptic Light Blue */
             color: #1a1a1a;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
         }
 
-        .game-container {
-            max-width: 500px;
+        /* Top Header Area (as seen in Screenshot 2026-06-10 161508.png) */
+        .top-bar {
             width: 100%;
-            text-align: center;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        .header {
-            font-size: 0.9rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: #8c8a85;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-arrow {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header-info {
+            line-height: 1.3;
+        }
+
+        .header-date {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .header-byline {
+            font-size: 0.85rem;
+            color: #444;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon {
+            font-size: 24px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .m-logo {
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* The Main Clue Box */
+        .clue-container {
+            width: 100%;
+            max-width: 700px;
+            background: white;
+            border: 2px solid black;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,1); /* Heavy black shadow */
             margin-bottom: 30px;
+            text-align: left;
         }
 
         .clue-box {
-            font-family: Georgia, serif;
             font-size: 1.35rem;
             line-height: 1.5;
-            margin-bottom: 25px;
-            padding: 0 10px;
+            color: #1a1a1a;
         }
 
-        /* The Letter Grid */
+        /* Input Grid */
         .grid {
             display: flex;
             justify-content: center;
-            gap: 8px;
             margin-bottom: 30px;
         }
 
         .letter-input {
-            width: 45px;
-            height: 45px;
-            border: 2px solid #1a1a1a;
-            border-radius: 4px;
-            background: transparent;
-            font-size: 1.4rem;
-            font-weight: 700;
-            text-align: center;
-            text-transform: uppercase;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        .letter-input:focus {
-            background-color: #f0ede6;
-        }
-
-        /* Success States */
-        .letter-input.correct {
-            background-color: #538d4e;
-            color: white;
-            border-color: #538d4e;
-        }
-
-        .status-message {
-            font-size: 1.2rem;
+            width: 55px;
+            height: 55px;
+            border: 3px solid black;
+            background: white;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #538d4e;
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.5s ease;
+            text-align: center;
+            text-transform: lowercase;
+            outline: none;
+            transition: background-color 0.2s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,1);
+            margin: 0;
+            border-right: 1.5px solid black; /* Create shared-wall effect */
+            border-left: 1.5px solid black;
+        }
+        
+        .letter-input:first-child {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border-left: 3px solid black;
+        }
+        
+        .letter-input:last-child {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border-right: 3px solid black;
         }
 
-        .status-message.show {
-            opacity: 1;
-            transform: translateY(0);
+        /* Input highlight state from Screenshot 2026-06-10 161508.png */
+        .letter-input.active {
+            background-color: #F8D8F7; /* Minute Cryptic Light Pink */
         }
 
-        /* The Secret Paragraph Reveal */
-        .reveal-paragraph {
+        /* Attempt Tracker (The Round Counters) */
+        .attempt-tracker {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .attempt-dot {
+            width: 18px;
+            height: 18px;
+            border: 2px solid black;
+            border-radius: 50%;
+            background-color: #D3EAFF; /* Unfilled dot color */
+        }
+
+        .attempt-dot.filled {
+            background-color: #F8D8F7; /* Filled pink dot (Screenshot 2026-06-10 161623.png) */
+        }
+        
+        .attempt-dot.active {
+            background-color: white; /* The active, highlighted dot */
+        }
+
+        .par-byline {
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 5px;
+            margin-bottom: 30px;
+        }
+
+        /* The Success Screen (Screenshot 2026-06-10 161623.png) */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(169, 209, 247, 0.95); /* Same blue but translucent */
             display: none;
-            opacity: 0;
-            background: #ffffff;
-            border: 1px solid #e4e2dd;
-            border-radius: 8px;
-            padding: 25px;
-            text-align: left;
-            line-height: 1.6;
-            font-size: 1.05rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: opacity 0.8s ease;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
         }
 
-        .reveal-paragraph.show {
-            display: block;
-            opacity: 1;
+        .success-card {
+            background: white;
+            border: 3px solid black;
+            border-radius: 8px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 6px 6px 0px rgba(0,0,0,1);
+        }
+
+        .success-msg-main {
+            font-weight: bold;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .success-msg-details {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .share-btn {
+            background-color: #F8D8F7; /* Minute Cryptic Light Pink */
+            border: 3px solid black;
+            border-radius: 20px; /* Highly rounded */
+            padding: 10px 40px;
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px rgba(0,0,0,1);
+            transition: all 0.1s ease;
+        }
+
+        .share-btn:active {
+            box-shadow: 1px 1px 0px rgba(0,0,0,1);
+            transform: translate(3px, 3px);
         }
     </style>
 </head>
 <body>
 
-    <div class="game-container">
-        <div class="header">Minute Cryptic • Special Edition</div>
-        
-        <!-- CHANGE YOUR CLUE HERE -->
+    <!-- TOP HEADER -->
+    <div class="top-bar">
+        <div class="header-left">
+            <span class="back-arrow">&#8592;</span>
+            <div class="header-info">
+                <!-- Change date if you want -->
+                <div class="header-date">10 June, 2026</div>
+                <div class="header-byline">A Minute Cryptic: Birthday Edition</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="icon">&#9432;</span> <!-- info icon -->
+            <span class="m-logo">m</span>
+        </div>
+    </div>
+
+    <!-- MAIN GAME AREA -->
+    <!-- CHANGE YOUR CLUE HERE -->
+    <div class="clue-container">
         <div class="clue-box">
             "Whose special day is it today?" (5)
         </div>
+    </div>
 
-        <div class="grid" id="inputGrid"></div>
-        <div class="status-message" id="statusMessage">Correct! 🎉</div>
+    <div class="grid" id="inputGrid"></div>
 
-        <!-- CHANGE YOUR FINAL PARAGRAPH HERE -->
-        <div class="reveal-paragraph" id="revealParagraph">
-            <h3>Happy Birthday!</h3>
-            <p>Insert your custom whole paragraph and stuff right here. You can write as much as you want to celebrate your friend's birthday, share an inside joke, or leave instructions for a real-life gift!</p>
+    <!-- Attempt Dots -->
+    <div class="attempt-tracker">
+        <div class="attempt-dot"></div>
+        <div class="attempt-dot active"></div> <!-- Dot 2 is active like image 1 -->
+        <div class="attempt-dot"></div>
+        <div class="attempt-dot"></div>
+        <div class="attempt-dot"></div>
+        <div class="attempt-dot"></div>
+        <div class="attempt-dot"></div>
+        <div class="attempt-dot"></div>
+    </div>
+    <div class="par-byline">par</div>
+
+
+    <!-- SUCCESS SCREEN (as seen in image 0) -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-card">
+            <!-- The same dot tracker but in success mode (all pink) -->
+            <div class="attempt-tracker" style="justify-content: center;">
+                <div class="attempt-dot filled"></div>
+                <div class="attempt-dot filled"></div>
+                <div class="attempt-dot filled"></div>
+                <div class="attempt-dot filled"></div>
+                <div class="attempt-dot filled"></div>
+                <div class="attempt-dot filled"></div>
+                <div class="attempt-dot filled"></div>
+                <div class="attempt-dot filled"></div>
+            </div>
+            
+            <div class="success-msg-main">Happy Birthday, Sarah!</div>
+            <div class="success-msg-details">2 under par</div>
+            
+            <!-- YOUR CUSTOM PARAGRAPH MESSAGE HERE -->
+            <div style="text-align: left; margin-bottom: 30px; line-height: 1.6;">
+                <p>Insert your whole paragraph and stuff right here. This message is only revealed when they get the answer correct! You can make it as long or personal as you need to celebrate your friend.</p>
+            </div>
+            
+            <button class="share-btn">share</button>
         </div>
     </div>
 
     <script>
-        // CHANGE THIS TO YOUR FRIEND'S NAME (UPPERCASE)
+        // --- 1. CONFIGURATION ---
+        // CHANGE THIS TO YOUR FRIEND'S NAME (all caps)
         const ANSWER = "SARAH"; 
 
+        // --- 2. GAME SETUP ---
         const grid = document.getElementById('inputGrid');
-        const statusMessage = document.getElementById('statusMessage');
-        const revealParagraph = document.getElementById('revealParagraph');
+        const successOverlay = document.getElementById('successOverlay');
         const inputs = [];
 
-        // Create the letter boxes dynamically based on answer length
+        // Dynamic Grid Creation
         for (let i = 0; i < ANSWER.length; i++) {
             const input = document.createElement('input');
             input.type = 'text';
             input.maxLength = 1;
             input.className = 'letter-input';
+            if (i === 0) input.classList.add('active'); // Set first box pink by default
             grid.appendChild(input);
             inputs.push(input);
 
-            // Auto-advance to next box typing
+            // Behavior Logic
             input.addEventListener('input', (e) => {
                 if (e.target.value.length === 1 && i < ANSWER.length - 1) {
+                    // Update highlight
+                    inputs[i].classList.remove('active');
                     inputs[i + 1].focus();
+                    inputs[i+1].classList.add('active');
                 }
                 checkAnswer();
             });
 
-            // Allow backspacing to go backward
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && e.target.value.length === 0 && i > 0) {
+                    // Update highlight on backspace
+                    inputs[i].classList.remove('active');
                     inputs[i - 1].focus();
+                    inputs[i - 1].classList.add('active');
                 }
+            });
+            
+            // Set active class on focus
+            input.addEventListener('focus', () => {
+                // Clear all actives
+                inputs.forEach(inp => inp.classList.remove('active'));
+                input.classList.add('active');
             });
         }
 
@@ -170,14 +346,12 @@
             let currentGuess = inputs.map(input => input.value.toUpperCase()).join('');
             
             if (currentGuess === ANSWER) {
+                // LOCK THE GAME and SHOW SUCCESS
                 inputs.forEach(input => {
-                    input.classList.add('correct');
+                    input.classList.remove('active');
                     input.disabled = true;
                 });
-                
-                // Show the "Correct!" banner and smoothly fade in the paragraph
-                statusMessage.classList.add('show');
-                revealParagraph.classList.add('show');
+                successOverlay.style.display = 'flex'; // Show the message card
             }
         }
     </script>
