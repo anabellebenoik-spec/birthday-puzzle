@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minute Cryptic: Birthday Edition</title>
     
-    <!-- FIXED: Correctly importing Inter Font from Google -->
+    <!-- FORCING THE FONTS TO LOAD FROM GOOGLE: Mulish (Clue) and Salsa (Playful/Sasita alternative) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&family=Salsa&display=swap" rel="stylesheet">
     
     <style>
         /* MINUTE CRYPTIC EXACT STYLING */
         body {
-            background-color: #A9D1F7; /* Minute Cryptic Light Blue */
+            /* Using your exact custom shade of blue */
+            background-color: rgb(173 211 255 / 1); 
             color: #1a1a1a;
-            font-family: Arial, Helvetica, sans-serif; /* Standard web sans-serif backup */
+            font-family: 'Mulish', sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -50,13 +51,13 @@
         }
 
         .header-date {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Mulish', sans-serif;
             font-weight: bold;
             font-size: 1.1rem;
         }
 
         .header-byline {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Mulish', sans-serif;
             font-size: 0.85rem;
             color: #444;
         }
@@ -97,8 +98,8 @@
         }
 
         .clue-box {
-            font-family: 'Inter', Arial, sans-serif; /* Forced Inter Font */
-            font-weight: 400;
+            font-family: 'Mulish', sans-serif; /* Forced Mulish Font */
+            font-weight: 700;
             font-size: 1.35rem;
             line-height: 1.5;
             color: #1a1a1a;
@@ -112,7 +113,7 @@
         }
 
         .letter-input {
-            font-family: Arial, Helvetica, sans-serif; /* Explicit Sans-Serif */
+            font-family: 'Salsa', cursive, sans-serif; /* Forced Sasita-style Font */
             width: 55px;
             height: 55px;
             border: 3px solid black;
@@ -141,8 +142,15 @@
             border-right: 3px solid black;
         }
 
+        /* Light Pink background when active typing */
         .letter-input.active {
-            background-color: #F8D8F7; /* Minute Cryptic Light Pink */
+            background-color: #F8D8F7; 
+        }
+
+        /* NEW: Locked Answer Pink State (Appears after hitting Enter) */
+        .letter-input.correct-pink {
+            background-color: #F8D8F7 !important;
+            color: #1a1a1a;
         }
 
         /* Attempt Tracker */
@@ -177,14 +185,14 @@
             margin-bottom: 30px;
         }
 
-        /* The Success Screen */
+        /* The Success Screen Overlay */
         .success-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(169, 209, 247, 0.95);
+            background-color: rgba(173, 211, 255, 0.95); /* matching blue shade translucent */
             display: none;
             flex-direction: column;
             align-items: center;
@@ -204,14 +212,14 @@
         }
 
         .success-msg-main {
-            font-family: Arial, Helvetica, sans-serif; /* Explicit Sans-Serif */
+            font-family: 'Salsa', cursive, sans-serif; /* Forced Sasita-style Font */
             font-weight: bold;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             margin-bottom: 10px;
         }
         
         .success-msg-details {
-            font-family: Arial, Helvetica, sans-serif; /* Explicit Sans-Serif */
+            font-family: 'Mulish', sans-serif;
             font-size: 1.1rem;
             color: #444;
             margin-bottom: 30px;
@@ -229,11 +237,6 @@
             cursor: pointer;
             box-shadow: 4px 4px 0px rgba(0,0,0,1);
             transition: all 0.1s ease;
-        }
-
-        .share-btn:active {
-            box-shadow: 1px 1px 0px rgba(0,0,0,1);
-            transform: translate(3px, 3px);
         }
     </style>
 </head>
@@ -295,7 +298,7 @@
             <div class="success-msg-details">2 under par</div>
             
             <!-- YOUR CUSTOM PARAGRAPH MESSAGE HERE -->
-            <div style="text-align: left; margin-bottom: 30px; line-height: 1.6; font-family: Arial, Helvetica, sans-serif;">
+            <div style="text-align: left; margin-bottom: 30px; line-height: 1.6; font-family: 'Mulish', sans-serif;">
                 <p>Insert your whole paragraph and stuff right here. This message is only revealed when they get the answer correct! You can make it as long or personal as you need to celebrate your friend.</p>
             </div>
             
@@ -354,11 +357,17 @@
             let currentGuess = inputs.map(input => input.value.toUpperCase()).join('');
             
             if (currentGuess === ANSWER) {
+                // Change the text grid boxes permanently to pink on success!
                 inputs.forEach(input => {
                     input.classList.remove('active');
+                    input.classList.add('correct-pink');
                     input.disabled = true;
                 });
-                successOverlay.style.display = 'flex'; 
+                
+                // Short delay to let them see the pink grid boxes before the card appears
+                setTimeout(() => {
+                    successOverlay.style.display = 'flex'; 
+                }, 400);
             } else {
                 alert("Try again!");
             }
