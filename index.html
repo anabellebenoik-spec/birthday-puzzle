@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minute Cryptic: Birthday Edition</title>
-    <!-- Importing Inter Font for the Clue -->
+    
+    <!-- FIXED: Correctly importing Inter Font from Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="family">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         /* MINUTE CRYPTIC EXACT STYLING */
         body {
             background-color: #A9D1F7; /* Minute Cryptic Light Blue */
             color: #1a1a1a;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif; /* Standard web sans-serif backup */
             margin: 0;
             padding: 20px;
             display: flex;
@@ -23,7 +24,7 @@
             min-height: 100vh;
         }
 
-        /* Top Header Area (as seen in Screenshot 2026-06-10 161508.png) */
+        /* Top Header Area */
         .top-bar {
             width: 100%;
             max-width: 800px;
@@ -49,11 +50,13 @@
         }
 
         .header-date {
+            font-family: Arial, Helvetica, sans-serif;
             font-weight: bold;
             font-size: 1.1rem;
         }
 
         .header-byline {
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 0.85rem;
             color: #444;
         }
@@ -88,13 +91,14 @@
             border: 2px solid black;
             border-radius: 8px;
             padding: 30px;
-            box-shadow: 4px 4px 0px rgba(0,0,0,1); /* Heavy black shadow */
+            box-shadow: 4px 4px 0px rgba(0,0,0,1);
             margin-bottom: 30px;
             text-align: left;
         }
 
         .clue-box {
-            font-family: 'Inter', sans-serif; /* Font changed to Inter */
+            font-family: 'Inter', Arial, sans-serif; /* Forced Inter Font */
+            font-weight: 400;
             font-size: 1.35rem;
             line-height: 1.5;
             color: #1a1a1a;
@@ -108,7 +112,7 @@
         }
 
         .letter-input {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* System Sans-Serif */
+            font-family: Arial, Helvetica, sans-serif; /* Explicit Sans-Serif */
             width: 55px;
             height: 55px;
             border: 3px solid black;
@@ -121,7 +125,7 @@
             transition: background-color 0.2s ease;
             box-shadow: 3px 3px 0px rgba(0,0,0,1);
             margin: 0;
-            border-right: 1.5px solid black; /* Create shared-wall effect */
+            border-right: 1.5px solid black;
             border-left: 1.5px solid black;
         }
         
@@ -137,12 +141,11 @@
             border-right: 3px solid black;
         }
 
-        /* Input highlight state from Screenshot 2026-06-10 161508.png */
         .letter-input.active {
             background-color: #F8D8F7; /* Minute Cryptic Light Pink */
         }
 
-        /* Attempt Tracker (The Round Counters) */
+        /* Attempt Tracker */
         .attempt-tracker {
             display: flex;
             gap: 10px;
@@ -154,15 +157,15 @@
             height: 18px;
             border: 2px solid black;
             border-radius: 50%;
-            background-color: #D3EAFF; /* Unfilled dot color */
+            background-color: #D3EAFF;
         }
 
         .attempt-dot.filled {
-            background-color: #F8D8F7; /* Filled pink dot (Screenshot 2026-06-10 161623.png) */
+            background-color: #F8D8F7;
         }
         
         .attempt-dot.active {
-            background-color: white; /* The active, highlighted dot */
+            background-color: white;
         }
 
         .par-byline {
@@ -174,14 +177,14 @@
             margin-bottom: 30px;
         }
 
-        /* The Success Screen (Screenshot 2026-06-10 161623.png) */
+        /* The Success Screen */
         .success-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(169, 209, 247, 0.95); /* Same blue but translucent */
+            background-color: rgba(169, 209, 247, 0.95);
             display: none;
             flex-direction: column;
             align-items: center;
@@ -201,23 +204,23 @@
         }
 
         .success-msg-main {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* System Sans-Serif */
+            font-family: Arial, Helvetica, sans-serif; /* Explicit Sans-Serif */
             font-weight: bold;
             font-size: 1.8rem;
             margin-bottom: 10px;
         }
         
         .success-msg-details {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* System Sans-Serif */
+            font-family: Arial, Helvetica, sans-serif; /* Explicit Sans-Serif */
             font-size: 1.1rem;
             color: #444;
             margin-bottom: 30px;
         }
 
         .share-btn {
-            background-color: #F8D8F7; /* Minute Cryptic Light Pink */
+            background-color: #F8D8F7;
             border: 3px solid black;
-            border-radius: 20px; /* Highly rounded */
+            border-radius: 20px;
             padding: 10px 40px;
             font-family: Georgia, serif;
             font-style: italic;
@@ -292,7 +295,7 @@
             <div class="success-msg-details">2 under par</div>
             
             <!-- YOUR CUSTOM PARAGRAPH MESSAGE HERE -->
-            <div style="text-align: left; margin-bottom: 30px; line-height: 1.6;">
+            <div style="text-align: left; margin-bottom: 30px; line-height: 1.6; font-family: Arial, Helvetica, sans-serif;">
                 <p>Insert your whole paragraph and stuff right here. This message is only revealed when they get the answer correct! You can make it as long or personal as you need to celebrate your friend.</p>
             </div>
             
@@ -357,7 +360,6 @@
                 });
                 successOverlay.style.display = 'flex'; 
             } else {
-                // Shake or alert if user presses enter on incorrect answer
                 alert("Try again!");
             }
         }
