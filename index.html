@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minute Cryptic: Birthday Edition</title>
+    <!-- Importing Inter Font for the Clue -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="family">
+    
     <style>
         /* MINUTE CRYPTIC EXACT STYLING */
         body {
@@ -89,6 +94,7 @@
         }
 
         .clue-box {
+            font-family: 'Inter', sans-serif; /* Font changed to Inter */
             font-size: 1.35rem;
             line-height: 1.5;
             color: #1a1a1a;
@@ -102,6 +108,7 @@
         }
 
         .letter-input {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* System Sans-Serif */
             width: 55px;
             height: 55px;
             border: 3px solid black;
@@ -194,12 +201,14 @@
         }
 
         .success-msg-main {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* System Sans-Serif */
             font-weight: bold;
             font-size: 1.8rem;
             margin-bottom: 10px;
         }
         
         .success-msg-details {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* System Sans-Serif */
             font-size: 1.1rem;
             color: #444;
             margin-bottom: 30px;
@@ -232,19 +241,17 @@
         <div class="header-left">
             <span class="back-arrow">&#8592;</span>
             <div class="header-info">
-                <!-- Change date if you want -->
-                <div class="header-date">10 June, 2026</div>
-                <div class="header-byline">A Minute Cryptic: Birthday Edition</div>
+                <div class="header-date">9 July 2026</div>
+                <div class="header-byline">By Belle</div>
             </div>
         </div>
         <div class="header-right">
-            <span class="icon">&#9432;</span> <!-- info icon -->
+            <span class="icon">&#9432;</span>
             <span class="m-logo">m</span>
         </div>
     </div>
 
     <!-- MAIN GAME AREA -->
-    <!-- CHANGE YOUR CLUE HERE -->
     <div class="clue-container">
         <div class="clue-box">
             "Whose special day is it today?" (5)
@@ -256,7 +263,7 @@
     <!-- Attempt Dots -->
     <div class="attempt-tracker">
         <div class="attempt-dot"></div>
-        <div class="attempt-dot active"></div> <!-- Dot 2 is active like image 1 -->
+        <div class="attempt-dot active"></div>
         <div class="attempt-dot"></div>
         <div class="attempt-dot"></div>
         <div class="attempt-dot"></div>
@@ -267,10 +274,9 @@
     <div class="par-byline">par</div>
 
 
-    <!-- SUCCESS SCREEN (as seen in image 0) -->
+    <!-- SUCCESS SCREEN -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-card">
-            <!-- The same dot tracker but in success mode (all pink) -->
             <div class="attempt-tracker" style="justify-content: center;">
                 <div class="attempt-dot filled"></div>
                 <div class="attempt-dot filled"></div>
@@ -295,48 +301,47 @@
     </div>
 
     <script>
-        // --- 1. CONFIGURATION ---
-        // CHANGE THIS TO YOUR FRIEND'S NAME (all caps)
+        // CONFIGURATION
         const ANSWER = "SARAH"; 
 
-        // --- 2. GAME SETUP ---
         const grid = document.getElementById('inputGrid');
         const successOverlay = document.getElementById('successOverlay');
         const inputs = [];
 
-        // Dynamic Grid Creation
+        // Grid Generation
         for (let i = 0; i < ANSWER.length; i++) {
             const input = document.createElement('input');
             input.type = 'text';
             input.maxLength = 1;
             input.className = 'letter-input';
-            if (i === 0) input.classList.add('active'); // Set first box pink by default
+            if (i === 0) input.classList.add('active'); 
             grid.appendChild(input);
             inputs.push(input);
 
-            // Behavior Logic
+            // Forward Typing Action
             input.addEventListener('input', (e) => {
                 if (e.target.value.length === 1 && i < ANSWER.length - 1) {
-                    // Update highlight
                     inputs[i].classList.remove('active');
                     inputs[i + 1].focus();
-                    inputs[i+1].classList.add('active');
+                    inputs[i + 1].classList.add('active');
                 }
-                checkAnswer();
             });
 
+            // Backspace/Delete Action & Enter key interception
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && e.target.value.length === 0 && i > 0) {
-                    // Update highlight on backspace
                     inputs[i].classList.remove('active');
                     inputs[i - 1].focus();
                     inputs[i - 1].classList.add('active');
                 }
+                
+                // Submit only on "Enter"
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
             });
             
-            // Set active class on focus
             input.addEventListener('focus', () => {
-                // Clear all actives
                 inputs.forEach(inp => inp.classList.remove('active'));
                 input.classList.add('active');
             });
@@ -346,12 +351,14 @@
             let currentGuess = inputs.map(input => input.value.toUpperCase()).join('');
             
             if (currentGuess === ANSWER) {
-                // LOCK THE GAME and SHOW SUCCESS
                 inputs.forEach(input => {
                     input.classList.remove('active');
                     input.disabled = true;
                 });
-                successOverlay.style.display = 'flex'; // Show the message card
+                successOverlay.style.display = 'flex'; 
+            } else {
+                // Shake or alert if user presses enter on incorrect answer
+                alert("Try again!");
             }
         }
     </script>
