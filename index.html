@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minute Cryptic: Birthday Edition</title>
     
-    <!-- FORCING THE FONTS TO LOAD FROM GOOGLE: Mulish (Clue) and Salsa (Playful/Sasita alternative) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&family=Salsa&display=swap" rel="stylesheet">
@@ -13,8 +12,7 @@
     <style>
         /* MINUTE CRYPTIC EXACT STYLING */
         body {
-            /* Using your exact custom shade of blue */
-            background-color: rgb(173 211 255 / 1); 
+            background-color: rgb(173 211 255); 
             color: #1a1a1a;
             font-family: 'Mulish', sans-serif;
             margin: 0;
@@ -23,16 +21,17 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            box-sizing: border-box;
         }
 
         /* Top Header Area */
         .top-bar {
             width: 100%;
-            max-width: 800px;
+            max-width: 600px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .header-left {
@@ -44,6 +43,7 @@
         .back-arrow {
             font-size: 24px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .header-info {
@@ -59,7 +59,7 @@
         .header-byline {
             font-family: 'Mulish', sans-serif;
             font-size: 0.85rem;
-            color: #444;
+            color: #333;
         }
 
         .header-right {
@@ -75,6 +75,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
         
         .m-logo {
@@ -84,80 +85,72 @@
             font-weight: bold;
         }
 
-        /* The Main Clue Box */
+        /* The Main Clue Box (Removed black border/heavy shadow per instructions) */
         .clue-container {
             width: 100%;
-            max-width: 700px;
+            max-width: 600px;
             background: white;
-            border: 2px solid black;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 4px 4px 0px rgba(0,0,0,1);
-            margin-bottom: 30px;
+            border-radius: 12px; /* Soft smooth corners */
+            padding: 25px 30px;
+            margin-bottom: 35px;
             text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .clue-box {
-            font-family: 'Mulish', sans-serif; /* Forced Mulish Font */
+            font-family: 'Mulish', sans-serif;
             font-weight: 700;
-            font-size: 1.35rem;
-            line-height: 1.5;
+            font-size: 1.4rem;
+            line-height: 1.4;
             color: #1a1a1a;
         }
 
-        /* Input Grid */
+        /* Input Grid with Uniform Borders */
         .grid {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .letter-input {
-            font-family: 'Salsa', cursive, sans-serif; /* Forced Sasita-style Font */
-            width: 55px;
-            height: 55px;
-            border: 3px solid black;
+            font-family: 'Salsa', cursive, sans-serif;
+            width: 52px;
+            height: 52px;
+            border: 3.5px solid black; /* Thick outer & inner appearance */
             background: white;
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             font-weight: bold;
             text-align: center;
             text-transform: lowercase;
             outline: none;
-            transition: background-color 0.2s ease;
-            box-shadow: 3px 3px 0px rgba(0,0,0,1);
-            margin: 0;
-            border-right: 1.5px solid black;
-            border-left: 1.5px solid black;
+            margin-right: -3.5px; /* Blends walls together uniformly */
         }
         
         .letter-input:first-child {
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            border-left: 3px solid black;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
         }
         
         .letter-input:last-child {
-            border-top-right-radius: 4px;
-            border-bottom-right-radius: 4px;
-            border-right: 3px solid black;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            margin-right: 0;
         }
 
-        /* Light Pink background when active typing */
         .letter-input.active {
-            background-color: #F8D8F7; 
+            background-color: #F8D8F7; /* Active input box pink highlight */
         }
 
-        /* NEW: Locked Answer Pink State (Appears after hitting Enter) */
         .letter-input.correct-pink {
             background-color: #F8D8F7 !important;
             color: #1a1a1a;
         }
 
-        /* Attempt Tracker */
+        /* Attempt Tracker Section */
         .attempt-tracker {
             display: flex;
             gap: 10px;
-            margin-bottom: 30px;
+            margin-bottom: 5px;
         }
 
         .attempt-dot {
@@ -180,19 +173,72 @@
             font-family: Georgia, serif;
             font-style: italic;
             font-weight: bold;
-            font-size: 1.1rem;
-            margin-top: 5px;
-            margin-bottom: 30px;
+            font-size: 1.2rem;
+            margin-top: 0px;
+            margin-bottom: 35px;
         }
 
-        /* The Success Screen Overlay */
+        /* Action Buttons Area from Image 2 */
+        .action-button-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .btn-base {
+            border: 3.5px solid black;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px rgba(0,0,0,1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.05s ease, box-shadow 0.05s ease;
+        }
+
+        .btn-base:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px rgba(0,0,0,1);
+        }
+
+        .scribble-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #C3E0FE;
+            font-size: 1.4rem;
+        }
+
+        .pill-btn {
+            height: 48px;
+            border-radius: 24px;
+            font-size: 1.25rem;
+            padding: 0 35px;
+        }
+
+        .hints-btn {
+            background-color: #FFEFA6;
+            font-family: Georgia, serif;
+            font-style: italic;
+        }
+
+        .check-btn {
+            background-color: #F8D8F7;
+            font-family: Georgia, serif;
+            font-style: italic;
+        }
+
+        /* Success Screen Overlays */
         .success-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(173, 211, 255, 0.95); /* matching blue shade translucent */
+            background-color: rgba(173, 211, 255, 0.95);
             display: none;
             flex-direction: column;
             align-items: center;
@@ -203,16 +249,16 @@
         .success-card {
             background: white;
             border: 3px solid black;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 40px;
             width: 90%;
-            max-width: 500px;
+            max-width: 480px;
             text-align: center;
             box-shadow: 6px 6px 0px rgba(0,0,0,1);
         }
 
         .success-msg-main {
-            font-family: 'Salsa', cursive, sans-serif; /* Forced Sasita-style Font */
+            font-family: 'Salsa', cursive, sans-serif;
             font-weight: bold;
             font-size: 2.2rem;
             margin-bottom: 10px;
@@ -236,13 +282,11 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 4px 4px 0px rgba(0,0,0,1);
-            transition: all 0.1s ease;
         }
     </style>
 </head>
 <body>
 
-    <!-- TOP HEADER -->
     <div class="top-bar">
         <div class="header-left">
             <span class="back-arrow">&#8592;</span>
@@ -257,7 +301,6 @@
         </div>
     </div>
 
-    <!-- MAIN GAME AREA -->
     <div class="clue-container">
         <div class="clue-box">
             "Whose special day is it today?" (5)
@@ -266,7 +309,6 @@
 
     <div class="grid" id="inputGrid"></div>
 
-    <!-- Attempt Dots -->
     <div class="attempt-tracker">
         <div class="attempt-dot"></div>
         <div class="attempt-dot active"></div>
@@ -279,11 +321,15 @@
     </div>
     <div class="par-byline">par</div>
 
+    <div class="action-button-container">
+        <button class="btn-base scribble-circle">〰</button>
+        <button class="btn-base pill-btn hints-btn">hints</button>
+        <button class="btn-base pill-btn check-btn" id="checkBtn">check</button>
+    </div>
 
-    <!-- SUCCESS SCREEN -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-card">
-            <div class="attempt-tracker" style="justify-content: center;">
+            <div class="attempt-tracker" style="justify-content: center; margin-bottom: 20px;">
                 <div class="attempt-dot filled"></div>
                 <div class="attempt-dot filled"></div>
                 <div class="attempt-dot filled"></div>
@@ -297,7 +343,6 @@
             <div class="success-msg-main">Happy Birthday, Sarah!</div>
             <div class="success-msg-details">2 under par</div>
             
-            <!-- YOUR CUSTOM PARAGRAPH MESSAGE HERE -->
             <div style="text-align: left; margin-bottom: 30px; line-height: 1.6; font-family: 'Mulish', sans-serif;">
                 <p>Insert your whole paragraph and stuff right here. This message is only revealed when they get the answer correct! You can make it as long or personal as you need to celebrate your friend.</p>
             </div>
@@ -312,9 +357,10 @@
 
         const grid = document.getElementById('inputGrid');
         const successOverlay = document.getElementById('successOverlay');
+        const checkBtn = document.getElementById('checkBtn');
         const inputs = [];
 
-        // Grid Generation
+        // Grid Generation with Custom Uniform Walls
         for (let i = 0; i < ANSWER.length; i++) {
             const input = document.createElement('input');
             input.type = 'text';
@@ -324,7 +370,7 @@
             grid.appendChild(input);
             inputs.push(input);
 
-            // Forward Typing Action
+            // Forward Cursor Auto-advance Logic
             input.addEventListener('input', (e) => {
                 if (e.target.value.length === 1 && i < ANSWER.length - 1) {
                     inputs[i].classList.remove('active');
@@ -333,7 +379,7 @@
                 }
             });
 
-            // Backspace/Delete Action & Enter key interception
+            // Backspace/Delete & Keyboard Navigation
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && e.target.value.length === 0 && i > 0) {
                     inputs[i].classList.remove('active');
@@ -341,7 +387,7 @@
                     inputs[i - 1].classList.add('active');
                 }
                 
-                // Submit only on "Enter"
+                // Submit via keyboard Enter
                 if (e.key === 'Enter') {
                     checkAnswer();
                 }
@@ -353,18 +399,21 @@
             });
         }
 
+        // Event Listener for the New Custom Check Button
+        checkBtn.addEventListener('click', checkAnswer);
+
         function checkAnswer() {
             let currentGuess = inputs.map(input => input.value.toUpperCase()).join('');
             
             if (currentGuess === ANSWER) {
-                // Change the text grid boxes permanently to pink on success!
+                // Instantly turn boxes pink upon submission verification
                 inputs.forEach(input => {
                     input.classList.remove('active');
                     input.classList.add('correct-pink');
                     input.disabled = true;
                 });
                 
-                // Short delay to let them see the pink grid boxes before the card appears
+                // Slight classic smooth buffer before modal overlay triggers
                 setTimeout(() => {
                     successOverlay.style.display = 'flex'; 
                 }, 400);
